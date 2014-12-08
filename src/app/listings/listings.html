@@ -2,22 +2,65 @@
 
 <div class="container" ng-controller="ListCtrl as list">
   <img src="http://i.imgur.com/DCUum.jpg">
-  <section class="col-md-10" id="main">
-    <h3 class="col-md-12" id="mainH3">Listings</h3>
+  <section class="col-xs-10 col-sm-10 col-md-10" id="main">
+    <h1 class="col-xs-12 col-sm-12 col-md-12" id="main-head">Listings</h1>
+    <h3 class="col-xs-4 col-sm-4 col-md-4" id="user-head">User</h3>
+    <h3 class="col-xs-4 col-sm-4 col-md-4" id="desc-head">Description</h3>
+    <h3 class="col-xs-4 col-sm-4 col-md-4" id="updated-head">Last Updated</h3>
+
     <ul class="list">
       <li class="listing" ng-repeat="listing in list.listings">
-        <a class="listTitle col-md-6" href="">{{listing.title}}</a>
-        <a class="listAuthor col-md-6" href="">{{listing.author}}</a>
+        <a class="col-xs-4 col-sm-4 col-md-4 listAuthor">
+          <img class="col-xs-4 col-sm-4 col-md-4 authorPic" src="{{app.user.avatarUrl}}">
+          <p class="col-xs-8 col-sm-8 col-md-8" data-toggle="modal" data-target="#{{listing.id}}">{{listing.author}}</p>
+        </a>
+        <p id="desc" class="col-xs-4 col-sm-4 col-md-4">{{listing.description}}</p>
+        <p id="date" class="col-xs-4 col-sm-4 col-md-4">{{listing.updated}}</p>
+        <div id="{{listing.id}}" class="modal fade" tabindex="-1" data-width="760" style="display: none;">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4 class="modal-title">Responsive</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6">
+                <h4>{{listing.author}}</h4>
+                <p><input class="form-control" type="text"></p>
+                <p><input class="form-control" type="text"></p>
+                <p><input class="form-control" type="text"></p>
+                <p><input class="form-control" type="text"></p>
+                <p><input class="form-control" type="text"></p>
+                <p><input class="form-control" type="text"></p>
+                <p><input class="form-control" type="text"></p>
+              </div>
+              <div class="col-md-6">
+                <h4>{{listing.description}}</h4>
+                <p><input class="form-control" type="text"></p>
+                <p><input class="form-control" type="text"></p>
+                <p><input class="form-control" type="text"></p>
+                <p><input class="form-control" type="text"></p>
+                <p><input class="form-control" type="text"></p>
+                <p><input class="form-control" type="text"></p>
+                <p><input class="form-control" type="text"></p>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
       </li>
     </ul>
   </section>
-  <section class="col-md-10" id="search">
+  <section class="col-xs-10 col-sm-10 col-md-10" id="search">
     <h3>Search By:</h3>
-    <div id="col1" class="col-md-6">
+    <p ng-repeat="userHave in list.userHaves">{{userHave}} | {{userHave.cardSetName}}</p>
+    <div id="col1" class="col-xs-6 col-sm-6 col-md-6">
       <label for="card_name">Card Name</label></a>
       <input type="text" id="card_name" name="card_name" placeholder="Black Lotus"></input>
     </div>
-    <div id="col2" class="col-md-6">
+    <div id="col2" class="col-xs-6 col-sm-6 col-md-6">
       <label for="set_name">Set Name</label>
       <input type="text" id="set_name" name="set_name" placeholder="Alpha"></input>
     </div>

@@ -1,16 +1,53 @@
-
-<div ng-controller='SearchCtrl as search'>
+<div class="col-md-10 search-cont" ng-controller='SearchCtrl as search'>
   <!--[if lt IE 10]>
   <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->
-  <form ng-submit='todoAdd()'>Search:
-    <input type='text' ng-model='searchText' placeholder='Search Cards'>
 
-    <br>
-  </form>
-
-  <ul>
-    <li ng-repeat = "set in search.sets  | filter:searchText | orderBy:cardSetName" style='list-style-type:none'>
-    {{set.name}} | {{set.cardSetName}} </li>
+  <ul id="search">
+    <input autocomplete="off" type="text" ng-model="searchForm" ng-keyup="search.searchByName()" name="q" id="topsearch" placeholder="Search..." class="field" />
+    <div id="haveBtn">
+      <p>Have:</p><input type='checkbox' class='checkbox' checked id='haveCheck'/>
+    </div>
+    <div id="wantBtn">
+      <p>Want:</p><input type='checkbox' class='checkbox'  id='wantCheck'/>
+    </div>
+    <li ng-repeat = "card in search.cards | limitTo: 10" style="list-style-type:none">
+      <p ng-click="search.addItem($index)">
+        <a href="">{{card.name}} | {{card.cardSetName}}</a>
+      </p>
+    </li>
   </ul>
+
+  <ul id="have">
+    <li ng-repeat="have in search.haves" >
+      <select>
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5+</option>
+      </select>
+      {{have.name}} | {{have.cardSetName}}
+      <a href='' ng-click="search.removeItem(have.id)">
+        Remove
+      </a>
+    </li>
+  </ul>
+
+  <ul id="want">
+    <li ng-repeat="want in search.wants" >
+      <select>
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5+</option>
+      </select>
+      {{want.name}} | {{want.cardSetName}}
+      <a href='' ng-click="search.removeItem(want.id)">
+        Remove
+      </a>
+    </li>
+  </ul>
+  <button id="save" ng-click="search.pushCards(app.user.facebook.id)">Save</button>
 </div>

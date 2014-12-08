@@ -2,37 +2,56 @@
 
 angular.module('mtgCentral')
 
-  .controller('ListCtrl', function (){
+  // .factory('HavesSearch', [function(){
+  //       var searchString =
+  //       $.ajax({
+  //         url: "http://api.mtgdb.info/cards/" + searchString,
+  //         success: function(data) {
+  //           deffered.resolve(data);
+  //         }
+  //       });
+  //     }
+  //     return deffered.promise;
+  //   };
+  //   return (SearchSvc);
+  // }])
+
+
+  // .factory('GetUsers', ['FirebaseUrl', '$firebase', function (FirebaseUrl, $firebase){
+  //   console.log($firebase(FirebaseUrl.child('users')).$asObject());
+  //   console.log(FirebaseUrl.child('users'));
+  //   return $firebase(FirebaseUrl.child('users')).$asObject();
+  // }])
+
+  .controller('ListCtrl', ['FirebaseUrl', function(FirebaseUrl){
+
+    var ref = FirebaseUrl.child('users');
+    var self = this;
+    this.userHaves = [];
+
+    // TODO: Add a quantity array and cards array to haves.
+    ref.orderByChild("haves").limitToLast(1).on("child_added", function(snapshot) {
+      self.userHaves = snapshot.val().haves;
+      // console.log(self.userHaves);
+      // console.log(self.userHaves.toString());
+      $.ajax({
+          url: "http://api.mtgdb.info/cards/" + self.userHaves.toString(),
+          success: function(data) {
+            self.userHaves = data;
+            console.log(self.userHaves);
+          }
+        });
+        console.log(self.userHaves);
+    });
+
+    console.log(self.userHaves);
+
       this.listings = [
-        { 'id' : '1', 'title' : 'Standard, Modern, and Legacy for trade', 'author' : 'Alex Soper'},
-        { 'id' : '2', 'title' : 'Commander for trade (Foils, foreign, etc)', 'author' : 'Jim James'},
-        { 'id' : '3', 'title' : 'Have: Fetches, shocks // Want: Jeskai Tempo', 'author' : 'Jason Murphy'},
-        { 'id' : '4', 'title' : 'Random generic have // wants', 'author' : 'Some Guy'},
-        { 'id' : '5', 'title' : 'Random generic have // wants', 'author' : 'Some Guy'},
-        { 'id' : '6', 'title' : 'Random generic have // wants', 'author' : 'Some Guy'},
-        { 'id' : '7', 'title' : 'Random generic have // wants', 'author' : 'Some Guy'},
-        { 'id' : '8', 'title' : 'Random generic have // wants', 'author' : 'Some Guy'},
-        { 'id' : '9', 'title' : 'Random generic have // wants', 'author' : 'Some Guy'},
-        { 'id' : '10', 'title' : 'Random generic have // wants', 'author' : 'Some Guy'},
-        { 'id' : '11', 'title' : 'Random generic have // wants', 'author' : 'Some Guy'},
-        { 'id' : '12', 'title' : 'Random generic have // wants', 'author' : 'Some Guy'},
-        { 'id' : '13', 'title' : 'Random generic have // wants', 'author' : 'Some Guy'},
-        { 'id' : '14', 'title' : 'Random generic have // wants', 'author' : 'Some Guy'},
-        { 'id' : '15', 'title' : 'Random generic have // wants', 'author' : 'Some Guy'},
-        { 'id' : '16', 'title' : 'Random generic have // wants', 'author' : 'Some Guy'},
-        { 'id' : '17', 'title' : 'Random generic have // wants', 'author' : 'Some Guy'},
-        { 'id' : '18', 'title' : 'Random generic have // wants', 'author' : 'Some Guy'},
-        { 'id' : '19', 'title' : 'Random generic have // wants', 'author' : 'Some Guy'},
-        { 'id' : '20', 'title' : 'Random generic have // wants', 'author' : 'Some Guy'}
+        { 'id' : '1', 'description' : 'Standard, EDH, Foreign Foil', 'author' : 'Alex Soper', 'updated' : '12/3/14'},
+        { 'id' : '2', 'description' : 'Commander, Legacy, Foreign Foil', 'author' : 'Jon Manock', 'updated' : '12/1/14'},
+        { 'id' : '3', 'description' : 'Standard, Modern, Legacy', 'author' : 'Ally Hinton', 'updated' : '12/2/14'}
       ];
 
-      // var ref = new Firebase("https://mtg-central.firebaseio.com/");
-      //
-      // ref.on("value", function(snapshot) {
-      //   $scope.cards = snapshot.val();
-      //   console.log(snapshot.val());
-      // }, function (errorObject) {
-      //   console.log("The read failed: " + errorObject.code);
-      // });
 
-  });
+
+  }]);
